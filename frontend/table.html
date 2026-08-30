@@ -1309,8 +1309,8 @@
 
     <script>
         /* =====================================================
-                                                               VARIABLES
-                                                            ===================================================== */
+                                                                       VARIABLES
+                                                                    ===================================================== */
 
         let selectedTable = null;
 
@@ -1428,7 +1428,7 @@
 
                 const response =
                     await fetch(
-                        `http://localhost:5000/api/bookings?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`
+                        `https://foodhouse1.onrender.com/api/bookings?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`
                     );
 
 
@@ -1765,7 +1765,7 @@
 
                         const response =
                             await fetch(
-                                "http://localhost:5000/api/bookings", {
+                                "https://foodhouse1.onrender.com/api/bookings", {
 
                                     method: "POST",
 
