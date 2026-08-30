@@ -6,7 +6,7 @@ const {
     createFood,
     updateFood,
     deleteFood
-} = require("../controllers/foodController");
+} = require("../controllers/foodcontroller");
 
 const router = express.Router();
 
