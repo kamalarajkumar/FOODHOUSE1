@@ -1,0 +1,1979 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOODHOUSE | Table Booking</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #111111;
+        }
+        /* =====================================================
+           FOODHOUSE TOP BAR
+        ===================================================== */
+        
+        .top-bar {
+            width: 100%;
+            background: #ff6500;
+            color: white;
+            text-align: center;
+            padding: 20px 15px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .logo {
+            font-size: 34px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        
+        .logo-icon {
+            margin-right: 8px;
+        }
+        /* =====================================================
+           PAGE TITLE
+        ===================================================== */
+        
+        .page-title {
+            text-align: center;
+            padding: 40px 20px 25px;
+        }
+        
+        .page-title h1 {
+            font-size: 44px;
+            font-weight: 900;
+        }
+        
+        .page-title h1 span {
+            color: #ff6500;
+        }
+        
+        .title-line {
+            width: 150px;
+            height: 3px;
+            background: #ffe62b;
+            margin: 12px auto;
+        }
+        
+        .page-title p {
+            color: #555;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        /* =====================================================
+           DATE / TIME
+        ===================================================== */
+        
+        .selection-box {
+            width: 92%;
+            max-width: 950px;
+            margin: 0 auto 25px;
+            background: #f0ecec;
+            border-radius: 12px;
+            padding: 22px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cccccc;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+            outline: none;
+        }
+        
+        .input-group input:focus {
+            border-color: #ff6500;
+            box-shadow: 0 0 0 2px rgba(255, 101, 0, 0.12);
+        }
+        /* =====================================================
+           STATUS LEGEND
+        ===================================================== */
+        
+        .legend {
+            width: 92%;
+            max-width: 950px;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .legend-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+        
+        .available-dot {
+            background: #20b45b;
+        }
+        
+        .selected-dot {
+            background: #ff9800;
+        }
+        
+        .booked-dot {
+            background: #e53935;
+        }
+        /* =====================================================
+           RESTAURANT FLOOR
+        ===================================================== */
+        
+        .restaurant-section {
+            width: 94%;
+            max-width: 1250px;
+            margin: 0 auto 45px;
+            background: #f0ecec;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+        }
+        
+        .restaurant-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+        
+        .restaurant-title span {
+            color: #ff6500;
+        }
+        /* =====================================================
+           FLOOR
+        ===================================================== */
+        
+        .floor {
+            position: relative;
+            width: 100%;
+            min-height: 720px;
+            background: white;
+            border: 2px solid #dddddd;
+            border-radius: 12px;
+            overflow: hidden;
+            background-image: linear-gradient( rgba(0, 0, 0, 0.025) 1px, transparent 1px), linear-gradient( 90deg, rgba(0, 0, 0, 0.025) 1px, transparent 1px);
+            background-size: 35px 35px;
+        }
+        /* =====================================================
+           RESTAURANT AREAS
+        ===================================================== */
+        
+        .kitchen {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: #222222;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 7px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        
+        .counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #ff6500;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 7px;
+            font-weight: bold;
+            z-index: 10;
+        }
+        
+        .entrance {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222222;
+            color: white;
+            padding: 12px 45px;
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            z-index: 10;
+        }
+        
+        .window-area {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            background: #e2f5ff;
+            border: 3px solid #83cfff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            color: #24506b;
+        }
+        /* =====================================================
+           TABLE DESIGN
+        ===================================================== */
+        
+        .table {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient( circle at 35% 25%, #ffffff, #dcdcdc);
+            border: 6px solid #20b45b;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 16px rgba(0, 0, 0, 0.25), inset 0 5px 8px rgba(0, 0, 0, 0.12);
+            transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+            z-index: 5;
+        }
+        
+        .table:hover {
+            transform: translateY(-5px) scale(1.04);
+            box-shadow: 0 18px 25px rgba(0, 0, 0, 0.25);
+        }
+        /* TABLE LEG */
+        
+        .table::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 18px;
+            bottom: -12px;
+            background: #777777;
+            border-radius: 4px;
+            z-index: -1;
+            box-shadow: 0 4px 5px rgba(0, 0, 0, 0.25);
+        }
+        /* =====================================================
+           CHAIRS
+        ===================================================== */
+        
+        .chair {
+            position: absolute;
+            width: 28px;
+            height: 28px;
+            background: #444444;
+            border-radius: 6px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.25);
+            z-index: -1;
+        }
+        
+        .chair-top {
+            top: -37px;
+        }
+        
+        .chair-bottom {
+            bottom: -37px;
+        }
+        
+        .chair-left {
+            left: -37px;
+            top: 42px;
+        }
+        
+        .chair-right {
+            right: -37px;
+            top: 42px;
+        }
+        /* =====================================================
+           SELECTED TABLE
+        ===================================================== */
+        
+        .table.selected {
+            border-color: #ff9800;
+            transform: scale(1.08);
+            box-shadow: 0 0 0 6px rgba(255, 152, 0, 0.18), 0 18px 30px rgba(0, 0, 0, 0.25);
+        }
+        /* =====================================================
+           BOOKED TABLE
+        ===================================================== */
+        
+        .table.booked {
+            border-color: #e53935;
+            background: linear-gradient( 145deg, #ffe0e0, #ffffff);
+            opacity: 0.60;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .table.booked:hover {
+            transform: none;
+        }
+        /* =====================================================
+           TABLE TEXT
+        ===================================================== */
+        
+        .table-id {
+            font-size: 20px;
+            font-weight: 900;
+        }
+        
+        .capacity {
+            font-size: 12px;
+            color: #555555;
+            margin-top: 5px;
+        }
+        
+        .table-status {
+            font-size: 10px;
+            font-weight: 900;
+            margin-top: 5px;
+            color: #159447;
+        }
+        
+        .table.booked .table-status {
+            color: #e53935;
+        }
+        /* =====================================================
+           TABLE POSITIONS
+        ===================================================== */
+        
+        #T01 {
+            top: 115px;
+            left: 7%;
+        }
+        
+        #T02 {
+            top: 115px;
+            left: 29%;
+        }
+        
+        #T03 {
+            top: 115px;
+            left: 51%;
+        }
+        
+        #T04 {
+            top: 115px;
+            left: 73%;
+        }
+        
+        #T05 {
+            top: 290px;
+            left: 7%;
+        }
+        
+        #T06 {
+            top: 290px;
+            left: 29%;
+        }
+        
+        #T07 {
+            top: 290px;
+            left: 51%;
+        }
+        
+        #T08 {
+            top: 290px;
+            left: 73%;
+        }
+        
+        #T09 {
+            top: 465px;
+            left: 7%;
+        }
+        
+        #T10 {
+            top: 465px;
+            left: 29%;
+        }
+        
+        #T11 {
+            top: 465px;
+            left: 51%;
+        }
+        
+        #T12 {
+            top: 465px;
+            left: 73%;
+        }
+        /* =====================================================
+           BOOKING FORM
+        ===================================================== */
+        
+        .booking-section {
+            width: 92%;
+            max-width: 800px;
+            margin: 0 auto 70px;
+            background: #f0ecec;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+        }
+        
+        .booking-section h2 {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+        
+        .booking-section h2 span {
+            color: #ff6500;
+        }
+        /* =====================================================
+           SELECTED INFO
+        ===================================================== */
+        
+        .selected-info {
+            background: white;
+            border-left: 5px solid #ff6500;
+            padding: 15px;
+            border-radius: 7px;
+            text-align: center;
+            margin-bottom: 22px;
+            font-weight: 600;
+        }
+        /* =====================================================
+           FORM GRID
+        ===================================================== */
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 17px;
+        }
+        
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #cccccc;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #ff6500;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+        /* =====================================================
+           BOOK BUTTON
+        ===================================================== */
+        
+        .book-button {
+            width: 100%;
+            margin-top: 22px;
+            border: none;
+            background: #ff6500;
+            color: white;
+            padding: 15px;
+            border-radius: 7px;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        
+        .book-button:hover {
+            background: #ea580c;
+            transform: translateY(-2px);
+        }
+        
+        .book-button:disabled {
+            background: #999999;
+            cursor: not-allowed;
+            transform: none;
+        }
+        /* =====================================================
+           SUCCESS
+        ===================================================== */
+        
+        .success-box {
+            display: none;
+            margin-top: 25px;
+            background: #eafff0;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .success-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #20b45b;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        
+        .success-box h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .success-box p {
+            color: #444;
+            margin: 5px 0;
+        }
+        /* =====================================================
+           LOADING
+        ===================================================== */
+        
+        .loading {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.82);
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+        
+        @media (max-width: 850px) {
+            .selection-box {
+                grid-template-columns: 1fr;
+            }
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full {
+                grid-column: auto;
+            }
+            .restaurant-section {
+                width: 96%;
+            }
+            .floor {
+                min-width: 900px;
+            }
+            .restaurant-section {
+                overflow-x: auto;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .logo {
+                font-size: 27px;
+            }
+            .page-title h1 {
+                font-size: 34px;
+            }
+            .page-title {
+                padding-top: 30px;
+            }
+            .booking-section {
+                padding: 20px;
+            }
+            .legend {
+                gap: 15px;
+            }
+        }
+        /* =====================================================
+   BOOKING SUCCESS
+===================================================== */
+        
+        .booking-id-box {
+            margin: 18px auto;
+            padding: 12px 18px;
+            background: white;
+            border-radius: 8px;
+            border: 1px dashed #ff6500;
+            max-width: 350px;
+        }
+        
+        .booking-id-box span {
+            display: block;
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .booking-id-box strong {
+            color: #ff6500;
+            font-size: 16px;
+            word-break: break-all;
+        }
+        
+        .success-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        
+        .track-booking-btn,
+        .home-booking-btn {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 7px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .track-booking-btn {
+            background: #ff6500;
+            color: white;
+        }
+        
+        .track-booking-btn:hover {
+            background: #e95700;
+        }
+        
+        .home-booking-btn {
+            background: #222;
+            color: white;
+        }
+        
+        .home-booking-btn:hover {
+            background: #000;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+     FOODHOUSE TOP
+===================================================== -->
+
+    <div class="top-bar">
+
+        <div class="logo">
+
+            <span class="logo-icon">🍴</span> FOODHOUSE
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+     TITLE
+===================================================== -->
+
+    <section class="page-title">
+
+        <h1>
+
+            Book Your
+            <span>Table</span>
+
+        </h1>
+
+        <div class="title-line"></div>
+
+        <p>
+
+            Select your date, time and preferred table at FOODHOUSE.
+
+        </p>
+
+    </section>
+
+
+    <!-- =====================================================
+     DATE AND TIME
+===================================================== -->
+
+    <section class="selection-box">
+
+        <div class="input-group">
+
+            <label for="bookingDate">
+
+            📅 Booking Date
+
+        </label>
+
+            <input type="date" id="bookingDate" required>
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="bookingTime">
+
+            🕐 Booking Time
+
+        </label>
+
+            <input type="time" id="bookingTime" required>
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+     LEGEND
+===================================================== -->
+
+    <div class="legend">
+
+        <div class="legend-item">
+
+            <span class="legend-dot available-dot">
+        </span> Available
+
+        </div>
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot selected-dot">
+        </span> Selected
+
+        </div>
+
+
+        <div class="legend-item">
+
+            <span class="legend-dot booked-dot">
+        </span> Already Booked
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+     RESTAURANT TABLE LAYOUT
+===================================================== -->
+
+    <section class="restaurant-section">
+
+        <div class="restaurant-title">
+
+            🍽️ FOODHOUSE
+            <span>Table Layout</span>
+
+        </div>
+
+
+        <div class="floor">
+
+
+            <div class="loading" id="loading">
+
+                Checking table availability...
+
+            </div>
+
+
+            <!-- KITCHEN -->
+
+            <div class="kitchen">
+
+                🍳 Kitchen
+
+            </div>
+
+
+            <!-- COUNTER -->
+
+            <div class="counter">
+
+                💳 Billing Counter
+
+            </div>
+
+
+            <!-- =================================================
+             TABLE 01
+        ================================================== -->
+
+            <div class="table" id="T01" data-table="T01" data-capacity="2">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+
+                <div class="table-id">
+                    T01
+                </div>
+
+                <div class="capacity">
+                    👥 2 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 02 -->
+
+            <div class="table" id="T02" data-table="T02" data-capacity="2">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+
+                <div class="table-id">
+                    T02
+                </div>
+
+                <div class="capacity">
+                    👥 2 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 03 -->
+
+            <div class="table" id="T03" data-table="T03" data-capacity="4">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T03
+                </div>
+
+                <div class="capacity">
+                    👥 4 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 04 -->
+
+            <div class="table" id="T04" data-table="T04" data-capacity="4">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T04
+                </div>
+
+                <div class="capacity">
+                    👥 4 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 05 -->
+
+            <div class="table" id="T05" data-table="T05" data-capacity="6">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T05
+                </div>
+
+                <div class="capacity">
+                    👥 6 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 06 -->
+
+            <div class="table" id="T06" data-table="T06" data-capacity="6">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T06
+                </div>
+
+                <div class="capacity">
+                    👥 6 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 07 -->
+
+            <div class="table" id="T07" data-table="T07" data-capacity="4">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T07
+                </div>
+
+                <div class="capacity">
+                    👥 4 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 08 -->
+
+            <div class="table" id="T08" data-table="T08" data-capacity="4">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T08
+                </div>
+
+                <div class="capacity">
+                    👥 4 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 09 -->
+
+            <div class="table" id="T09" data-table="T09" data-capacity="8">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T09
+                </div>
+
+                <div class="capacity">
+                    👥 8 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 10 -->
+
+            <div class="table" id="T10" data-table="T10" data-capacity="8">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T10
+                </div>
+
+                <div class="capacity">
+                    👥 8 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 11 -->
+
+            <div class="table" id="T11" data-table="T11" data-capacity="4">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T11
+                </div>
+
+                <div class="capacity">
+                    👥 4 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- TABLE 12 -->
+
+            <div class="table" id="T12" data-table="T12" data-capacity="6">
+
+                <span class="chair chair-top"></span>
+                <span class="chair chair-bottom"></span>
+                <span class="chair chair-left"></span>
+                <span class="chair chair-right"></span>
+
+                <div class="table-id">
+                    T12
+                </div>
+
+                <div class="capacity">
+                    👥 6 Seats
+                </div>
+
+                <div class="table-status">
+                    Available
+                </div>
+
+            </div>
+
+
+            <!-- WINDOW -->
+
+            <div class="window-area">
+
+                🪟 Window Area
+
+            </div>
+
+
+            <!-- ENTRANCE -->
+
+            <div class="entrance">
+
+                🚪 Entrance
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- =====================================================
+     BOOKING FORM
+===================================================== -->
+
+    <section class="booking-section">
+
+        <h2>
+
+            Complete Your
+            <span>Reservation</span>
+
+        </h2>
+
+
+        <div class="selected-info" id="selectedInfo">
+
+            Select a date and time, then choose an available table.
+
+        </div>
+
+
+        <form id="bookingForm">
+
+
+            <div class="form-grid">
+
+
+                <!-- NAME -->
+
+                <div class="form-group">
+
+                    <label for="customerName">
+
+                    Full Name *
+
+                </label>
+
+                    <input type="text" id="customerName" placeholder="Enter your name" required>
+
+                </div>
+
+
+                <!-- PHONE -->
+
+                <div class="form-group">
+
+                    <label for="phone">
+
+                    Phone Number *
+
+                </label>
+
+                    <input type="tel" id="phone" placeholder="10-digit phone number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric" required>
+
+                </div>
+
+
+                <!-- EMAIL -->
+
+                <div class="form-group">
+
+                    <label for="email">
+
+                    Email Address *
+
+                </label>
+
+                    <input type="email" id="email" placeholder="Enter your email" required>
+
+                </div>
+
+
+                <!-- GUESTS -->
+
+                <div class="form-group">
+
+                    <label for="guests">
+
+                    Number of Guests *
+
+                </label>
+
+                    <input type="number" id="guests" min="1" max="8" placeholder="Number of guests" required>
+
+                </div>
+
+
+                <!-- REQUESTS -->
+
+                <div class="form-group full">
+
+                    <label for="requests">
+
+                    Special Requests
+
+                </label>
+
+                    <textarea id="requests" placeholder="Birthday setup, window seat, special occasion, etc."></textarea>
+
+                </div>
+
+
+            </div>
+
+
+            <button type="submit" class="book-button" id="bookButton" disabled>
+
+            Select a Table First
+
+        </button>
+
+
+        </form>
+
+
+        <!-- SUCCESS -->
+        <div class="success-box" id="successBox">
+
+            <div class="success-icon">
+                ✓
+            </div>
+
+            <h3>
+                Table Booked Successfully!
+            </h3>
+
+            <p id="successMessage"></p>
+
+            <div class="booking-id-box">
+
+                <span>
+            Booking ID
+        </span>
+
+                <strong id="bookingIdDisplay">
+            --
+        </strong>
+
+            </div>
+
+            <div class="success-buttons">
+
+                <button type="button" class="track-booking-btn" id="trackBookingBtn">
+
+            📋 Track My Reservation
+
+        </button>
+
+                <button type="button" class="home-booking-btn" onclick="window.location.href='foodhouse.html'">
+
+            🍽️ Back to FOODHOUSE
+
+        </button>
+
+            </div>
+
+        </div>
+
+
+
+    </section>
+
+
+
+    <script>
+        /* =====================================================
+                                                                       VARIABLES
+                                                                    ===================================================== */
+
+        let selectedTable = null;
+
+
+        const dateInput =
+            document.getElementById("bookingDate");
+
+
+        const timeInput =
+            document.getElementById("bookingTime");
+
+
+        const selectedInfo =
+            document.getElementById("selectedInfo");
+
+
+        const bookButton =
+            document.getElementById("bookButton");
+
+
+        const loading =
+            document.getElementById("loading");
+
+
+        /* =====================================================
+           SET MINIMUM DATE = TODAY
+        ===================================================== */
+
+        const today =
+            new Date()
+            .toISOString()
+            .split("T")[0];
+
+
+        dateInput.min = today;
+
+
+        /* =====================================================
+           DATE / TIME CHANGE
+        ===================================================== */
+
+        dateInput.addEventListener(
+            "change",
+            checkAvailability
+        );
+
+
+        timeInput.addEventListener(
+            "change",
+            checkAvailability
+        );
+
+
+        /* =====================================================
+           CHECK TABLE AVAILABILITY
+        ===================================================== */
+
+        async function checkAvailability() {
+
+
+            selectedTable = null;
+
+
+            bookButton.disabled = true;
+
+            bookButton.textContent =
+                "Select a Table First";
+
+
+            document
+                .querySelectorAll(".table")
+                .forEach(table => {
+
+                    table.classList.remove(
+                        "selected"
+                    );
+
+                    table.classList.remove(
+                        "booked"
+                    );
+
+                    table
+                        .querySelector(
+                            ".table-status"
+                        )
+                        .textContent =
+                        "Available";
+
+                });
+
+
+            const date =
+                dateInput.value;
+
+
+            const time =
+                timeInput.value;
+
+
+            if (!date || !time) {
+
+                selectedInfo.textContent =
+                    "Select a date and time, then choose an available table.";
+
+                return;
+            }
+
+
+            loading.style.display =
+                "flex";
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        `https://foodhouse1.onrender.com/api/bookings?date=${encodeURIComponent(date)}&time=${encodeURIComponent(time)}`
+                    );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        "Unable to check availability"
+                    );
+
+                }
+
+
+                const bookings =
+                    await response.json();
+
+
+                /*
+                   Backend should return
+                   booked bookings for this
+                   date/time.
+                */
+
+
+                bookings.forEach(
+                    booking => {
+
+
+                        const table =
+                            document.querySelector(
+                                `[data-table="${booking.tableId}"]`
+                            );
+
+
+                        if (!table) {
+                            return;
+                        }
+
+
+                        table.classList.add(
+                            "booked"
+                        );
+
+
+                        table
+                            .querySelector(
+                                ".table-status"
+                            )
+                            .textContent =
+                            "Already Booked";
+
+                    }
+                );
+
+
+                const availableTables =
+                    document.querySelectorAll(
+                        ".table:not(.booked)"
+                    );
+
+
+                selectedInfo.innerHTML =
+
+                    `<strong>
+                    ${availableTables.length}
+                </strong>
+                tables available for
+                ${date}
+                at
+                ${time}.
+                Select your table.`;
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Availability Error:",
+                    error
+                );
+
+
+                selectedInfo.innerHTML =
+
+                    `Unable to check availability.
+                Please make sure the FOODHOUSE
+                backend is running on port 5000.`;
+
+
+            } finally {
+
+                loading.style.display =
+                    "none";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           TABLE SELECTION
+        ===================================================== */
+
+        document
+            .querySelectorAll(".table")
+            .forEach(table => {
+
+
+                table.addEventListener(
+                    "click",
+                    function() {
+
+
+                        /* BOOKED TABLE */
+
+                        if (
+                            this.classList
+                            .contains("booked")
+                        ) {
+
+                            alert(
+                                `Table ${this.dataset.table} is already booked for this date and time.`
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* DATE/TIME REQUIRED */
+
+                        if (!dateInput.value ||
+                            !timeInput.value
+                        ) {
+
+                            alert(
+                                "Please select the booking date and time first."
+                            );
+
+                            return;
+
+                        }
+
+
+                        /* REMOVE PREVIOUS SELECTION */
+
+                        document
+                            .querySelectorAll(".table")
+                            .forEach(t => {
+
+                                t.classList.remove(
+                                    "selected"
+                                );
+
+                            });
+
+
+                        /* SELECT CURRENT TABLE */
+
+                        this.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedTable = {
+
+                            id: this.dataset.table,
+
+                            capacity: Number(
+                                this.dataset.capacity
+                            )
+
+                        };
+
+
+                        /* SET MAX GUESTS */
+
+                        document
+                            .getElementById(
+                                "guests"
+                            )
+                            .max =
+                            selectedTable.capacity;
+
+
+                        /* DISPLAY INFO */
+
+                        selectedInfo.innerHTML =
+
+                            `You selected
+                        <strong>
+                            Table ${selectedTable.id}
+                        </strong>
+                        •
+                        ${selectedTable.capacity}
+                        Seats
+                        •
+                        ${dateInput.value}
+                        •
+                        ${timeInput.value}`;
+
+
+                        /* ENABLE BOOK BUTTON */
+
+                        bookButton.disabled =
+                            false;
+
+
+                        bookButton.textContent =
+
+                            `Book Table ${selectedTable.id}`;
+
+                    }
+                );
+
+            });
+
+
+        /* =====================================================
+           BOOKING FORM
+        ===================================================== */
+
+        document
+            .getElementById("bookingForm")
+            .addEventListener(
+                "submit",
+                async function(event) {
+
+
+                    event.preventDefault();
+
+
+                    /* TABLE CHECK */
+
+                    if (!selectedTable) {
+
+                        alert(
+                            "Please select an available table."
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* GUESTS */
+
+                    const guests =
+                        Number(
+                            document
+                            .getElementById(
+                                "guests"
+                            )
+                            .value
+                        );
+
+
+                    if (
+                        guests < 1 ||
+                        guests >
+                        selectedTable.capacity
+                    ) {
+
+                        alert(
+                            `Table ${selectedTable.id} can accommodate maximum ${selectedTable.capacity} guests.`
+                        );
+
+                        return;
+
+                    }
+
+
+                    /* BOOKING OBJECT */
+
+                    const booking = {
+
+                        tableId: selectedTable.id,
+
+                        capacity: selectedTable.capacity,
+
+                        date: dateInput.value,
+
+                        time: timeInput.value,
+
+                        customerName: document
+                            .getElementById(
+                                "customerName"
+                            )
+                            .value
+                            .trim(),
+
+                        phone: document
+                            .getElementById(
+                                "phone"
+                            )
+                            .value
+                            .trim(),
+
+                        email: document
+                            .getElementById(
+                                "email"
+                            )
+                            .value
+                            .trim(),
+
+                        guests: guests,
+
+                        requests: document
+                            .getElementById(
+                                "requests"
+                            )
+                            .value
+                            .trim()
+
+                    };
+
+
+                    console.log(
+                        "Sending booking:",
+                        booking
+                    );
+
+
+                    /* DISABLE */
+
+                    bookButton.disabled =
+                        true;
+
+                    bookButton.textContent =
+                        "Booking...";
+
+
+                    try {
+
+
+                        const response =
+                            await fetch(
+                                "https://foodhouse1.onrender.com/api/bookings", {
+
+                                    method: "POST",
+
+                                    headers: {
+
+                                        "Content-Type": "application/json"
+
+                                    },
+
+                                    body: JSON.stringify(
+                                        booking
+                                    )
+
+                                }
+                            );
+
+
+                        const data =
+                            await response.json();
+
+
+                        if (!response.ok) {
+
+                            throw new Error(
+                                data.message ||
+                                "Booking failed"
+                            );
+
+                        }
+
+
+                        /* =====================================
+                           SUCCESS
+                        ===================================== */
+
+
+                        document
+                            .getElementById(
+                                "successBox"
+                            )
+                            .style.display =
+                            "block";
+
+
+                        document
+                            .getElementById(
+                                "successMessage"
+                            )
+                            .textContent =
+
+                            `Table ${booking.tableId}
+                        has been reserved for
+                        ${booking.date}
+                        at
+                        ${booking.time}.`;
+                        /* SHOW BOOKING ID */
+
+                        const createdBooking =
+                            data.booking;
+
+                        const bookingId =
+                            createdBooking._id;
+
+
+                        document
+                            .getElementById(
+                                "bookingIdDisplay"
+                            )
+                            .textContent =
+                            bookingId;
+
+
+                        /* TRACK BUTTON */
+
+                        document
+                            .getElementById(
+                                "trackBookingBtn"
+                            )
+                            .onclick = function() {
+
+                                window.location.href =
+                                    `booking-tracking.html?id=${bookingId}`;
+
+                            };
+
+                        /* MARK TABLE BOOKED */
+
+                        const table =
+                            document.querySelector(
+                                `[data-table="${booking.tableId}"]`
+                            );
+
+
+                        if (table) {
+
+                            table.classList.remove(
+                                "selected"
+                            );
+
+                            table.classList.add(
+                                "booked"
+                            );
+
+
+                            table
+                                .querySelector(
+                                    ".table-status"
+                                )
+                                .textContent =
+                                "Already Booked";
+
+                        }
+
+
+                        /* RESET SELECTION */
+
+                        selectedTable = null;
+
+
+                        selectedInfo.innerHTML =
+
+                            `Table
+                        <strong>
+                            ${booking.tableId}
+                        </strong>
+                        has been successfully booked.`;
+
+
+
+                        bookButton.disabled =
+                            true;
+
+
+                        bookButton.textContent =
+                            "Booking Confirmed";
+
+
+                        /*
+                           Clear customer fields
+                           but preserve date/time.
+                        */
+
+                        document
+                            .getElementById(
+                                "bookingForm"
+                            )
+                            .reset();
+
+
+                        dateInput.value =
+                            booking.date;
+
+
+                        timeInput.value =
+                            booking.time;
+
+
+                        /*
+                           Scroll to success message
+                        */
+
+                        document
+                            .getElementById(
+                                "successBox"
+                            )
+                            .scrollIntoView({
+                                behavior: "smooth"
+                            });
+
+
+                    } catch (error) {
+
+
+                        console.error(
+                            "Booking Error:",
+                            error
+                        );
+
+
+                        alert(
+                            error.message ||
+                            "Unable to book table. Please try again."
+                        );
+
+
+                        bookButton.disabled =
+                            false;
+
+
+                        if (selectedTable) {
+
+                            bookButton.textContent =
+                                `Book Table ${selectedTable.id}`;
+
+                        } else {
+
+                            bookButton.textContent =
+                                "Select a Table First";
+
+                        }
+
+                    }
+
+                }
+            );
+    </script>
+
+
+</body>
+
+</html>
