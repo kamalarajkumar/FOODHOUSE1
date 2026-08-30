@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOODHOUSE - Checkout</title>
+
+    <style>
+        * {
+            6 box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #fff8f2;
+            color: #333;
+        }
+        
+        header {
+            background: #f97316;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        
+        .back-btn {
+            background: white;
+            color: #f97316;
+            border: none;
+            border-radius: 7px;
+            padding: 10px 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .container {
+            width: min(900px, 92%);
+            margin: 35px auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #f97316;
+            margin-bottom: 30px;
+        }
+        
+        .checkout-box {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .checkout-box h2 {
+            color: #f97316;
+            margin-top: 0;
+        }
+        
+        .form-group {
+            margin-bottom: 18px;
+        }
+        
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+        
+        input,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            font-size: 15px;
+            outline: none;
+        }
+        
+        input:focus,
+        textarea:focus {
+            border-color: #f97316;
+        }
+        
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+        
+        .order-summary {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff8f2;
+            border-radius: 10px;
+        }
+        
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .order-total {
+            text-align: right;
+            font-size: 23px;
+            font-weight: bold;
+            color: #f97316;
+            margin-top: 18px;
+        }
+        
+        .place-order-btn {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .place-order-btn:hover {
+            background: #ea580c;
+        }
+        
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+        }
+        
+        .empty-message a {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 11px 20px;
+            background: #f97316;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+        }
+        
+        @media (max-width: 600px) {
+            header {
+                padding: 15px;
+            }
+            .logo {
+                font-size: 22px;
+            }
+            .container {
+                width: 94%;
+            }
+        }
+        
+        .success-box {
+            max-width: 600px;
+            margin: 60px auto;
+            padding: 45px 30px;
+            text-align: center;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            animation: successAppear 0.5s ease;
+        }
+        
+        .success-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 25px;
+            border-radius: 50%;
+            background: #22c55e;
+            color: white;
+            font-size: 55px;
+            line-height: 90px;
+            font-weight: bold;
+            animation: successPop 0.6s ease;
+        }
+        
+        .success-box h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+        
+        .success-message {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .success-submessage {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        .success-buttons button {
+            border: none;
+            padding: 14px 28px;
+            border-radius: 10px;
+            background: #f97316;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .success-buttons button:hover {
+            transform: translateY(-2px);
+        }
+        
+        @keyframes successPop {
+            0% {
+                transform: scale(0);
+            }
+            70% {
+                transform: scale(1.15);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        @keyframes successAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .continue-shopping-btn {
+            display: inline-block;
+            padding: 14px 28px;
+            border-radius: 10px;
+            background: #f97316;
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .continue-shopping-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .checkout-item p {
+            margin: 6px 0 0;
+            color: #666;
+        }
+        
+        .checkout-total {
+            text-align: right;
+            font-size: 23px;
+            font-weight: bold;
+            color: #f97316;
+            margin-top: 18px;
+        }
+        
+        .payment-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff8f2;
+            border-radius: 10px;
+        }
+        
+        .payment-section h2 {
+            color: #f97316;
+            margin-top: 0;
+        }
+        
+        .payment-option {
+            display: block;
+            padding: 14px;
+            margin-top: 10px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        
+        .payment-option:hover {
+            border-color: #f97316;
+        }
+        
+        .payment-option input {
+            width: auto;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">FOODHOUSE</div>
+
+        <a class="back-btn" href="http://127.0.0.1:5501/frontend/cart.html">
+    ← Back to Cart
+</a>
+        <a class="back-btn" href="http://127.0.0.1:5501/frontend/foodhouse.html" style="margin-left: 10px;">
+            🏠 Back to Menu
+        </a>
+    </header>
+
+
+    <div class="container">
+
+        <h1>Checkout</h1>
+
+        <div id="checkoutContent"></div>
+
+    </div>
+
+
+    <script>
+        let cart =
+            JSON.parse(localStorage.getItem("foodhouseCart")) || [];
+
+        function loadCheckout() {
+
+            const content =
+                document.getElementById("checkoutContent");
+
+            if (cart.length === 0) {
+                content.innerHTML = `
+            <div class="empty-cart">
+                <h2>Your cart is empty</h2>
+                <p>Please add some food before checkout.</p>
+                <a href="http://127.0.0.1:5501/frontend/foodhouse.html">
+                    Go to Menu
+                </a>
+            </div>
+        `;
+                return;
+            }
+
+            let total = 0;
+
+            const itemsHTML = cart.map(item => {
+
+                const itemTotal =
+                    Number(item.price) * Number(item.quantity);
+
+                total += itemTotal;
+
+                return `
+            <div class="checkout-item">
+
+                <div>
+                    <strong>${item.name}</strong>
+                    <p>
+                        ₹${item.price}/- × ${item.quantity}
+                    </p>
+                </div>
+
+                <strong>
+                    ₹${itemTotal}/-
+                </strong>
+
+            </div>
+        `;
+
+            }).join("");
+
+            content.innerHTML = `
+
+        <div class="checkout-box">
+
+            <h2>Customer Details</h2>
+
+            <form onsubmit="placeOrder(event)">
+
+                <label>Full Name *</label>
+
+                <input
+                    type="text"
+                    id="customerName"
+                    placeholder="Enter your name"
+                    required
+                >
+
+                <label>Phone Number *</label>
+
+               <input
+    type="tel"
+    id="phone"
+    placeholder="Enter your 10-digit phone number"
+    maxlength="10"
+    pattern="[0-9]{10}"
+    inputmode="numeric"
+    required
+>
+
+                <label>Delivery Address *</label>
+
+                <textarea
+                    id="address"
+                    placeholder="Enter your delivery address"
+                    required
+                ></textarea>
+
+                <label>Special Instructions</label>
+
+                <textarea
+                    id="instructions"
+                    placeholder="Any special instructions?"
+                ></textarea>
+
+                <h2>Order Summary</h2>
+
+                <div class="checkout-items">
+                    ${itemsHTML}
+                </div>
+
+                <div class="checkout-total">
+                    <strong>Total: ₹${total}/-</strong>
+                </div>
+<div class="payment-section">
+    <h2>Payment Method</h2>
+
+    <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="cod" checked>
+        💵 Cash on Delivery
+    </label>
+
+    <label class="payment-option">
+        <input type="radio" name="paymentMethod" value="online">
+        💳 UPI / PhonePe / Google Pay / Card
+    </label>
+</div>
+
+<button
+                    type="submit"
+                    class="place-order-btn">
+                    Place Order
+                </button>
+
+            </form>
+
+        </div>
+    `;
+        }
+
+        function trackOrder(orderId) {
+
+            window.location.href =
+                `order-tracking.html?id=${orderId}`;
+        }
+
+        function continueShopping() {
+            console.log("Continue Shopping clicked");
+
+            window.location.assign(
+                "http://127.0.0.1:5501/frontend/foodhouse.html"
+            );
+        }
+
+        async function createFoodOrder(order) {
+
+            try {
+
+                // =====================================================
+                // GET LOGGED-IN USER
+                // =====================================================
+
+                const userData =
+                    localStorage.getItem("foodhouseUser");
+
+                let userId = null;
+
+                if (userData) {
+
+                    try {
+
+                        const user =
+                            JSON.parse(userData);
+
+                        userId =
+                            user.id ||
+                            user._id ||
+                            null;
+
+                    } catch (error) {
+
+                        console.error(
+                            "USER DATA PARSE ERROR:",
+                            error
+                        );
+
+                    }
+
+                }
+
+
+                // =====================================================
+                // ADD USER ID TO ORDER
+                // =====================================================
+
+                if (userId) {
+
+                    order.userId = userId;
+
+                }
+
+
+                console.log(
+                    "ORDER BEING SENT:",
+                    order
+                );
+
+
+                // =====================================================
+                // CREATE ORDER
+                // =====================================================
+
+                const response =
+                    await fetch(
+                        "http://localhost:5000/api/orders", {
+                            method: "POST",
+
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+
+                            body: JSON.stringify(order)
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                // =====================================================
+                // CHECK RESPONSE
+                // =====================================================
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to place order"
+                    );
+
+                }
+
+
+                // =====================================================
+                // GET ORDER ID
+                // =====================================================
+
+                const orderId =
+                    data.order &&
+                    data.order._id ||
+                    data._id ||
+                    data.orderId;
+
+
+                if (orderId) {
+
+                    localStorage.setItem(
+                        "lastOrderId",
+                        orderId
+                    );
+
+                }
+
+
+                // =====================================================
+                // CLEAR CART
+                // =====================================================
+
+                localStorage.removeItem(
+                    "foodhouseCart"
+                );
+
+                cart = [];
+
+
+                // =====================================================
+                // SUCCESS MESSAGE
+                // =====================================================
+
+                const content =
+                    document.getElementById(
+                        "checkoutContent"
+                    );
+
+
+                content.innerHTML = `
+
+            <div class="success-box">
+
+                <div class="success-icon">
+                    ✓
+                </div>
+
+                <h2>
+                    Order Placed Successfully!
+                </h2>
+
+                <div class="success-message">
+                    Thank you for ordering from FOODHOUSE 🍽️
+                </div>
+
+                <div class="success-submessage">
+                    Your order has been received successfully.
+                </div>
+
+                <div class="success-buttons">
+
+                    <button
+                        type="button"
+                        onclick="window.location.href='order-tracking.html?id=${orderId}'"
+                    >
+                        📦 Track My Order
+                    </button>
+
+                    <button
+                        type="button"
+                        onclick="window.location.href='foodhouse.html'"
+                        style="margin-left: 10px;"
+                    >
+                        🍽️ FOODHOUSE Home
+                    </button>
+
+                </div>
+
+            </div>
+
+        `;
+
+
+                // =====================================================
+                // GO TO ORDER TRACKING
+                // =====================================================
+
+                if (orderId) {
+
+                    window.location.href =
+                        `order-tracking.html?id=${orderId}`;
+
+                } else {
+
+                    window.location.href =
+                        "foodhouse.html";
+
+                }
+
+
+            } catch (error) {
+
+                console.error(
+                    "ORDER CREATION ERROR:",
+                    error
+                );
+
+
+                alert(
+                    error.message ||
+                    "Failed to place order. Please try again."
+                );
+
+            }
+
+        }
+
+        async function placeOrder(event) {
+            event.preventDefault();
+
+            const name =
+                document.getElementById("customerName").value.trim();
+
+            const phone =
+                document.getElementById("phone").value.trim();
+
+            const address =
+                document.getElementById("address").value.trim();
+
+            const instructions =
+                document.getElementById("instructions").value.trim();
+
+            const selectedPayment =
+                document.querySelector(
+                    'input[name="paymentMethod"]:checked'
+                );
+
+            if (!selectedPayment) {
+                alert("Please select a payment method.");
+                return;
+            }
+
+            const paymentMethod = selectedPayment.value;
+
+            if (!name || !phone || !address) {
+                alert("Please fill all required details.");
+                return;
+            }
+
+            const totalAmount = cart.reduce(
+                (sum, item) =>
+                sum +
+                Number(item.price) *
+                Number(item.quantity),
+                0
+            );
+
+            const order = {
+                customerName: name,
+                phone: phone,
+                address: address,
+                notes: instructions,
+
+                items: cart.map(item => ({
+                    foodId: item.id,
+                    name: item.name,
+                    price: Number(item.price),
+                    quantity: Number(item.quantity),
+                    image: item.image || ""
+                })),
+
+                totalAmount: totalAmount
+            };
+
+
+            // CASH ON DELIVERY
+            if (paymentMethod === "cod") {
+                order.paymentMethod = "COD";
+                order.paymentStatus = "Pending";
+
+                await createFoodOrder(order);
+                return;
+            }
+
+
+            // ONLINE PAYMENT
+            try {
+                console.log("ORDER BEING SENT:", order);
+                const response = await fetch(
+                    "http://localhost:5000/api/payments/create-order", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            amount: totalAmount
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    throw new Error(
+                        data.message ||
+                        "Unable to create payment"
+                    );
+                }
+
+                const razorpayOrder = data.order;
+
+                const options = {
+                    key: "rzp_test_TVF8IeAAgFVWSY",
+                    amount: razorpayOrder.amount,
+                    currency: "INR",
+                    name: "FOODHOUSE",
+                    description: "FOODHOUSE Food Order",
+                    order_id: razorpayOrder.id,
+
+                    prefill: {
+                        name: name,
+                        contact: phone
+                    },
+
+                    theme: {
+                        color: "#f97316"
+                    },
+
+                    handler: async function(paymentResponse) {
+                        try {
+                            const verifyResponse =
+                                await fetch(
+                                    "http://localhost:5000/api/payments/verify", {
+                                        method: "POST",
+                                        headers: {
+                                            "Content-Type": "application/json"
+                                        },
+                                        body: JSON.stringify({
+                                            razorpay_order_id: paymentResponse.razorpay_order_id,
+
+                                            razorpay_payment_id: paymentResponse.razorpay_payment_id,
+
+                                            razorpay_signature: paymentResponse.razorpay_signature
+                                        })
+                                    }
+                                );
+
+                            const verifyData =
+                                await verifyResponse.json();
+
+                            if (!verifyResponse.ok ||
+                                !verifyData.success
+                            ) {
+                                alert(
+                                    "Payment verification failed. Your order was not placed."
+                                );
+                                return;
+                            }
+
+                            order.paymentMethod = "Online";
+                            order.paymentStatus = "Paid";
+                            order.transactionId =
+                                paymentResponse.razorpay_payment_id;
+
+                            await createFoodOrder(order);
+
+                        } catch (error) {
+                            console.error(
+                                "PAYMENT VERIFICATION ERROR:",
+                                error
+                            );
+
+                            alert(
+                                "Payment verification failed. Please contact FOODHOUSE."
+                            );
+                        }
+                    },
+
+                    modal: {
+                        ondismiss: function() {
+                            console.log(
+                                "Payment window closed."
+                            );
+                        }
+                    }
+                };
+
+                if (typeof Razorpay === "undefined") {
+                    alert(
+                        "Razorpay could not be loaded. Please refresh the page."
+                    );
+                    return;
+                }
+
+                const razorpay =
+                    new Razorpay(options);
+
+                razorpay.open();
+
+            } catch (error) {
+                console.error(
+                    "PAYMENT ERROR:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to start payment. Please try again."
+                );
+            }
+        }
+
+
+        loadCheckout();
+    </script>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js">
+    </script>
+
+</body>
+
+</html>

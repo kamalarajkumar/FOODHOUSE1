@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Order items</title>
+  <style>
+    body 
+      {
+  font-family: Arial, sans-serif;
+      background: #070606;
+     background-image: url('https://as2.ftcdn.net/v2/jpg/02/92/20/37/1000_F_292203735_CSsyqyS6A4Z9Czd4Msf7qZEhoxjpzZl1.jpg');     padding: 0;
+      height: 100vh; /* 100% of the viewport height */
+      background-size: cover;        /* Make image cover the entire screen */
+      background-position: center;   /* Center the image */
+      background-repeat: no-repeat;  /* Don't repeat the image */
+      background-attachment: fixed;  /* Optional: keeps the image fixed on scroll */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: sans-serif;
+      color: white;
+}
+
+.container {
+  max-width: 400px;
+  margin:60px auto;
+  background: #1d1c1c;
+  padding: 30px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: #ff5e01;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #f04907;
+}
+
+.items label {
+  display: block;
+  margin: 8px 0;
+}
+
+.hidden {
+  display: none;
+}
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.hero::after {
+    content: '';
+    position:absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+}
+
+.hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+        margin-bottom: 30px;
+}
+
+.btn {
+    padding: 10px 25px;
+    background: #e67e22;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+  </style>
+</head>
+<body >
+   <div class="container">
+    <!-- Step 1: User Login -->
+    <section id="login">
+      <h2>Login</h2>
+      <input type="text" id="username" placeholder="Username" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="nextStep('menu')">Login</button>
+    </section>
+
+    <!-- Step 2: Select Items -->
+    <section id="menu" class="hidden">
+      <h2>Select Your Food</h2>
+             <button ><a href="menu.html" target="_blank">View menu</a></button>
+       <button onclick="nextStep('details')">Next</button>
+    </section>
+    <!-- Step 3: Enter Details -->
+    <section id="details" class="hidden">
+      <h2>Enter Your Details</h2>
+      <input type="text" id="name" placeholder="Full Name" />
+      <input type="text" id="address" placeholder="Address" />
+      <input type="text" id="Pincode" placeholder="pincode" />
+      <input type="text" id="phone" placeholder="Phone Number" />
+      <button onclick="nextStep('confirm')">Place Order</button>
+    </section>
+
+    <!-- Step 4: Confirm Order -->
+    <section id="confirm" class="hidden">
+      <h2>Order Placed Successfully! 🎉</h2>
+      <p>Thank you for ordering. Your food is on the way!</p>
+      <p>We will bring your food within few minuts</p>
+    </section>
+
+  </div>
+
+  <script>
+    function nextStep(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
+</body>
+</html>

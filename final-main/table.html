@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Table Booking | Your Restaurant</title>
+  <style>
+    body {
+     background-image: url('https://t4.ftcdn.net/jpg/02/94/26/33/360_F_294263329_1IgvqNgDbhmQNgDxkhlW433uOFuIDar4.jpg');
+      height: 100vh; /* 100% of the viewport height */
+      background-size: cover;        /* Make image cover the entire screen */
+      background-position: center;   /* Center the image */
+      background-repeat: no-repeat;  /* Don't repeat the image */
+      display: flex;
+      font-family: Arial, sans-serif;
+      background-color: #F8EDEB;
+      color: #130101030;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .booking-form {
+      background-color: #a56845;
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #ffd102;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #f11010;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      margin-top: 20px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #f30e06;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="booking-form">
+    <h2>Book a Table</h2>
+    <form action="/submit-booking" method="POST">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="guests">Number of Guests</label>
+      <select id="guests" name="guests" required>
+        <option value="">Select</option>
+        <option value="1">1 person</option>
+        <option value="2">2 people</option>
+        <option value="3">3 people</option>
+        <option value="4">4 people</option>
+        <option value="5">5 people</option>
+        <option value="6+">6 or more</option>
+      </select>
+
+      <label for="date">Booking Date</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="time">Time</label>
+      <input type="time" id="time" name="time" required>
+
+      <label for="requests">Special Requests</label>
+      <textarea id="requests" name="requests" rows="3" placeholder="E.g. Window seat, birthday setup, etc."></textarea>
+
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders - FOODHOUSE</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f8f8f8;
+            color: #222;
+        }
+        
+        header {
+            background: #f97316;
+            color: white;
+            padding: 18px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+        
+        .home-btn {
+            text-decoration: none;
+            color: white;
+            background: #222;
+            padding: 10px 16px;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 30px auto;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .loading,
+        .empty,
+        .error {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+        }
+        
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+        
+        .order-id {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        .status {
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .status-Pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-Preparing {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .status-Out-for-Delivery {
+            background: #e0e7ff;
+            color: #4338ca;
+        }
+        
+        .status-Delivered {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .order-date {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .items {
+            margin-top: 15px;
+        }
+        
+        .item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .total {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+        
+        .payment-info {
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff7ed;
+            border: 1px solid #fed7aa;
+            border-radius: 10px;
+        }
+        
+        .payment-info h3 {
+            margin-top: 0;
+            color: #f97316;
+        }
+        
+        .paid {
+            color: green;
+            font-weight: bold;
+        }
+        
+        .pending-payment {
+            color: #b45309;
+            font-weight: bold;
+        }
+        
+        .failed-payment {
+            color: red;
+            font-weight: bold;
+        }
+        
+        .track-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 18px;
+            background: #f97316;
+            color: white;
+            text-decoration: none;
+            border-radius: 7px;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                width: 94%;
+            }
+            header {
+                padding: 15px;
+            }
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header>
+
+        <h1>🍽️ FOODHOUSE</h1>
+
+        <a href="foodhouse.html" class="home-btn">
+        🏠 Home
+    </a>
+
+    </header>
+
+
+    <div class="container">
+
+        <h2 class="page-title">
+            📦 My Orders
+        </h2>
+
+
+        <div id="ordersContainer">
+
+            <div class="loading">
+                Loading your orders...
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <script>
+        const API_URL =
+            "http://localhost:5000";
+
+
+        // =====================================================
+        // LOAD MY ORDERS
+        // =====================================================
+
+        async function loadMyOrders() {
+
+            const container =
+                document.getElementById("ordersContainer");
+
+            const token =
+                localStorage.getItem("foodhouseToken");
+
+            const userData =
+                localStorage.getItem("foodhouseUser");
+
+
+            // =====================================================
+            // CHECK LOGIN
+            // =====================================================
+
+            if (!token || !userData) {
+
+                container.innerHTML = `
+            <div class="empty">
+
+                <h2>Please login first</h2>
+
+                <p>
+                    You need to login to view your orders.
+                </p>
+
+                <a
+                    href="login.html"
+                    class="track-btn"
+                >
+                    Login
+                </a>
+
+            </div>
+        `;
+
+                return;
+            }
+
+
+            try {
+
+                // =================================================
+                // GET USER
+                // =================================================
+
+                const user =
+                    JSON.parse(userData);
+
+                const userId =
+                    user.id ||
+                    user._id;
+
+
+                console.log(
+                    "LOGGED IN USER:",
+                    user
+                );
+
+                console.log(
+                    "USER ID:",
+                    userId
+                );
+
+
+                if (!userId) {
+
+                    throw new Error(
+                        "User ID not found. Please login again."
+                    );
+
+                }
+
+
+                // =================================================
+                // FETCH CUSTOMER ORDERS
+                // =================================================
+
+                const response =
+                    await fetch(
+                        `${API_URL}/api/orders/my-orders?userId=${encodeURIComponent(userId)}`, {
+                            method: "GET",
+
+                            headers: {
+                                "Authorization": `Bearer ${token}`,
+
+                                "Content-Type": "application/json"
+                            }
+                        }
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                console.log(
+                    "MY ORDERS RESPONSE:",
+                    data
+                );
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Failed to load your orders"
+                    );
+
+                }
+
+
+                const orders =
+                    data.orders || [];
+
+
+                renderOrders(orders);
+
+
+            } catch (error) {
+
+                console.error(
+                    "MY ORDERS ERROR:",
+                    error
+                );
+
+
+                container.innerHTML = `
+
+            <div class="error">
+
+                <h2>
+                    Unable to load orders
+                </h2>
+
+                <p>
+                    ${error.message}
+                </p>
+
+                <button
+                    onclick="loadMyOrders()"
+                    class="track-btn"
+                >
+                    Try Again
+                </button>
+
+            </div>
+
+        `;
+
+            }
+
+        }
+        // =====================================================
+        // RENDER ORDERS
+        // =====================================================
+
+        function renderOrders(orders) {
+
+            const container =
+                document.getElementById(
+                    "ordersContainer"
+                );
+
+
+            if (!orders || orders.length === 0) {
+
+                container.innerHTML = `
+
+                <div class="empty">
+
+                    <h2>
+                        No orders yet 🍽️
+                    </h2>
+
+                    <p>
+                        Your placed orders will appear here.
+                    </p>
+
+                    <a
+                        href="foodhouse.html"
+                        class="track-btn"
+                    >
+                        Order Food
+                    </a>
+
+                </div>
+
+            `;
+
+                return;
+            }
+
+
+            container.innerHTML =
+                orders.map(order => {
+
+
+                        const itemsHTML =
+                            (order.items || [])
+                            .map(item => `
+
+                            <div class="item">
+
+                                <span>
+                                    ${item.name}
+                                    ×
+                                    ${item.quantity}
+                                </span>
+
+                                <strong>
+                                    ₹${
+                                        Number(item.price) *
+                                        Number(item.quantity)
+                                    }
+                                </strong>
+
+                            </div>
+
+                        `)
+                            .join("");
+
+
+                        const status =
+                            order.status ||
+                            "Pending";
+
+
+                        const statusClass =
+                            status
+                            .toLowerCase()
+                            .replaceAll(" ", "-");
+
+
+                        let paymentStatus =
+                            order.paymentStatus ||
+                            "Pending";
+
+
+                        let paymentClass =
+                            "pending-payment";
+
+
+                        if (
+                            paymentStatus === "Paid"
+                        ) {
+
+                            paymentClass =
+                                "paid";
+
+                        } else if (
+                            paymentStatus === "Failed"
+                        ) {
+
+                            paymentClass =
+                                "failed-payment";
+
+                        }
+
+
+                        return `
+
+                    <div class="order-card">
+
+                        <div class="order-header">
+
+                            <div class="order-id">
+
+                                📦 Order #${order._id}
+
+                            </div>
+
+
+                            <div
+                                class="
+                                    status
+                                    status-${statusClass}
+                                "
+                            >
+
+                                ${status}
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="order-date">
+
+                            🕐
+
+                            ${
+                                order.createdAt
+                                    ? new Date(
+                                        order.createdAt
+                                    ).toLocaleString()
+                                    : "Date unavailable"
+                            }
+
+                        </div>
+
+
+                        <div class="items">
+
+                            ${itemsHTML}
+
+                        </div>
+
+
+                        <div class="payment-info">
+
+                            <h3>
+                                💳 Payment Information
+                            </h3>
+
+
+                            <p>
+
+                                <strong>
+                                    Payment Method:
+                                </strong>
+
+                                ${
+                                    order.paymentMethod ||
+                                    "COD"
+                                }
+
+                            </p>
+
+
+                            <p>
+
+                                <strong>
+                                    Payment Status:
+                                </strong>
+
+                                <span
+                                    class="${paymentClass}"
+                                >
+
+                                    ${
+                                        paymentStatus === "Paid"
+                                            ? "✓ Paid"
+                                            : paymentStatus === "Failed"
+                                                ? "✗ Failed"
+                                                : "⏳ Pending"
+                                    }
+
+                                </span>
+
+                            </p>
+
+
+                            ${
+                                order.transactionId
+                                    ? `
+
+                                        <p>
+
+                                            <strong>
+                                                Transaction ID:
+                                            </strong>
+
+                                            ${order.transactionId}
+
+                                        </p>
+
+                                    `
+                                    : ""
+                            }
+
+                        </div>
+
+
+                        <div class="total">
+
+                            Total:
+                            ₹${Number(
+                                order.totalAmount || 0
+                            )}
+
+                        </div>
+
+
+                        <a
+                            href="
+                                order-tracking.html?id=${order._id}
+                            "
+                            class="track-btn"
+                        >
+                            📍 Track Order
+                        </a>
+
+                    </div>
+
+                `;
+
+            })
+            .join("");
+
+    }
+
+
+    // =====================================================
+    // START
+    // =====================================================
+    // =====================================================
+// START
+// =====================================================
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadMyOrders();
+});
+    </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FOODHOUSE | Track Reservation</title>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #ffffff;
+            color: #111111;
+            min-height: 100vh;
+        }
+        /* TOP BAR */
+        
+        .top-bar {
+            background: #ff6500;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+        }
+        
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+        }
+        /* PAGE */
+        
+        .page {
+            width: 92%;
+            max-width: 850px;
+            margin: 45px auto;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .page-title h1 {
+            font-size: 40px;
+            font-weight: 900;
+        }
+        
+        .page-title h1 span {
+            color: #ff6500;
+        }
+        
+        .page-title p {
+            color: #666;
+            margin-top: 10px;
+        }
+        /* LOADING */
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        /* ERROR */
+        
+        .error-box {
+            display: none;
+            background: #fff0f0;
+            border-left: 5px solid #e53935;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        /* BOOKING CARD */
+        
+        .booking-card {
+            display: none;
+            background: #f4f1f1;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.10);
+        }
+        
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .booking-header h2 {
+            font-size: 27px;
+        }
+        
+        .booking-id {
+            color: #777;
+            font-size: 12px;
+            margin-top: 6px;
+            word-break: break-all;
+        }
+        /* STATUS */
+        
+        .status {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+        
+        .status-confirmed {
+            background: #dff7e8;
+            color: #168044;
+        }
+        
+        .status-cancelled {
+            background: #ffe0e0;
+            color: #c62828;
+        }
+        
+        .status-completed {
+            background: #e3e8ff;
+            color: #3949ab;
+        }
+        /* TABLE DISPLAY */
+        
+        .table-display {
+            margin: 25px 0;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+            border: 3px solid #ff6500;
+        }
+        
+        .table-icon {
+            font-size: 55px;
+            margin-bottom: 8px;
+        }
+        
+        .table-number {
+            font-size: 30px;
+            font-weight: 900;
+            color: #ff6500;
+        }
+        
+        .table-capacity {
+            color: #666;
+            margin-top: 5px;
+        }
+        /* DETAILS */
+        
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .detail {
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+        }
+        
+        .detail-label {
+            color: #777;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .detail-value {
+            font-weight: bold;
+            font-size: 16px;
+        }
+        /* REQUEST */
+        
+        .request {
+            margin-top: 15px;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+        }
+        /* BUTTONS */
+        
+        .buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            border: none;
+            padding: 13px 20px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .home-btn {
+            background: #ff6500;
+            color: white;
+        }
+        
+        .home-btn:hover {
+            background: #e95700;
+        }
+        
+        .refresh-btn {
+            background: #222;
+            color: white;
+        }
+        
+        .refresh-btn:hover {
+            background: #000;
+        }
+        /* MOBILE */
+        
+        @media(max-width: 650px) {
+            .page {
+                margin-top: 30px;
+            }
+            .page-title h1 {
+                font-size: 32px;
+            }
+            .booking-card {
+                padding: 20px;
+            }
+            .booking-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .cancel-btn {
+            background: #e53935;
+            color: white;
+            border: none;
+            padding: 13px 20px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .cancel-btn:hover {
+            background: #c62828;
+        }
+        
+        .cancel-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- TOP -->
+
+    <div class="top-bar">
+
+        <div class="logo">
+
+            🍴 FOODHOUSE
+
+        </div>
+
+    </div>
+
+
+    <!-- PAGE -->
+
+    <main class="page">
+
+
+        <div class="page-title">
+
+            <h1>
+
+                Track Your
+                <span>Reservation</span>
+
+            </h1>
+
+            <p>
+
+                View your FOODHOUSE table booking details.
+
+            </p>
+
+        </div>
+
+
+        <!-- LOADING -->
+
+        <div class="loading" id="loading">
+
+            🔄 Loading your reservation...
+
+        </div>
+
+
+        <!-- ERROR -->
+
+        <div class="error-box" id="errorBox">
+
+            <h3>
+
+                Reservation Not Found
+
+            </h3>
+
+            <p id="errorMessage">
+
+                We couldn't find this booking.
+
+            </p>
+
+        </div>
+
+
+        <!-- BOOKING -->
+
+        <div class="booking-card" id="bookingCard">
+
+
+            <!-- HEADER -->
+
+            <div class="booking-header">
+
+                <div>
+
+                    <h2>
+
+                        🪑 Table Reservation
+
+                    </h2>
+
+                    <div class="booking-id" id="bookingId">
+
+                    </div>
+
+                </div>
+
+
+                <div class="status" id="bookingStatus">
+
+                    Confirmed
+
+                </div>
+
+            </div>
+
+
+            <!-- TABLE -->
+
+            <div class="table-display">
+
+                <div class="table-icon">
+
+                    🪑
+
+                </div>
+
+                <div class="table-number" id="tableNumber">
+
+                    T01
+
+                </div>
+
+                <div class="table-capacity" id="tableCapacity">
+
+                    4 Seats
+
+                </div>
+
+            </div>
+
+
+            <!-- DETAILS -->
+
+            <div class="details-grid">
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+
+                        👤 Customer
+
+                    </div>
+
+                    <div class="detail-value" id="customerName">
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+
+                        📞 Phone
+
+                    </div>
+
+                    <div class="detail-value" id="phone">
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+
+                        📅 Date
+
+                    </div>
+
+                    <div class="detail-value" id="bookingDate">
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+
+                        🕐 Time
+
+                    </div>
+
+                    <div class="detail-value" id="bookingTime">
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+
+                        👥 Guests
+
+                    </div>
+
+                    <div class="detail-value" id="guests">
+
+                    </div>
+
+                </div>
+
+
+                <div class="detail">
+
+                    <div class="detail-label">
+
+                        📧 Email
+
+                    </div>
+
+                    <div class="detail-value" id="email">
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- REQUEST -->
+
+            <div class="request" id="requestBox">
+
+                <div class="detail-label">
+
+                    📝 Special Request
+
+                </div>
+
+                <div class="detail-value" id="requests">
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+
+            <div class="buttons">
+
+                <button type="button" class="btn refresh-btn" onclick="loadBooking()">
+
+        🔄 Refresh Status
+
+    </button>
+
+
+                <button type="button" class="btn cancel-btn" id="cancelBookingBtn" onclick="cancelBooking()">
+
+        ❌ Cancel Reservation
+
+    </button>
+
+
+                <a href="./foodhouse.html" class="btn home-btn">
+
+        🍽️ FOODHOUSE Home
+
+    </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <script>
+        /* =====================================================
+                                                                                                                                                                       GET BOOKING ID FROM URL
+                                                                                                                                                                    ===================================================== */
+
+        const urlParams =
+            new URLSearchParams(
+                window.location.search
+            );
+
+
+        const bookingId =
+            urlParams.get("id");
+
+
+        /* =====================================================
+           ELEMENTS
+        ===================================================== */
+
+        const loading =
+            document.getElementById(
+                "loading"
+            );
+
+
+        const errorBox =
+            document.getElementById(
+                "errorBox"
+            );
+
+
+        const errorMessage =
+            document.getElementById(
+                "errorMessage"
+            );
+
+
+        const bookingCard =
+            document.getElementById(
+                "bookingCard"
+            );
+        async function cancelBooking() {
+
+            if (!bookingId) {
+
+                alert("Booking ID is missing.");
+                return;
+
+            }
+
+            const confirmed = confirm(
+                "Are you sure you want to cancel this reservation?"
+            );
+
+            if (!confirmed) {
+                return;
+            }
+
+            const cancelButton =
+                document.getElementById("cancelBookingBtn");
+
+            cancelButton.disabled = true;
+            cancelButton.textContent = "Cancelling...";
+
+            try {
+
+                const response = await fetch(
+                    `http://localhost:5000/api/bookings/${bookingId}/cancel`, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(
+                        data.message ||
+                        "Failed to cancel reservation"
+                    );
+                }
+
+                alert(
+                    "Your reservation has been cancelled successfully."
+                );
+
+                await loadBooking();
+
+            } catch (error) {
+
+                console.error(
+                    "Cancellation error:",
+                    error
+                );
+
+                alert(
+                    error.message ||
+                    "Unable to cancel reservation."
+                );
+
+                cancelButton.disabled = false;
+                cancelButton.textContent =
+                    "❌ Cancel Reservation";
+            }
+        }
+
+        /* =====================================================
+           LOAD BOOKING
+        ===================================================== */
+
+        async function loadBooking() {
+
+
+            if (!bookingId) {
+
+                loading.style.display =
+                    "none";
+
+                errorBox.style.display =
+                    "block";
+
+                errorMessage.textContent =
+                    "No booking ID was provided.";
+
+                return;
+
+            }
+
+
+            loading.style.display =
+                "block";
+
+            errorBox.style.display =
+                "none";
+
+            bookingCard.style.display =
+                "none";
+
+
+            try {
+
+
+                const response =
+                    await fetch(
+                        `http://localhost:5000/api/bookings/${bookingId}`
+                    );
+
+
+                const data =
+                    await response.json();
+
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Booking not found"
+                    );
+
+                }
+
+
+                const booking =
+                    data.booking;
+
+
+                /* =========================================
+                   DISPLAY
+                ========================================= */
+
+
+                document
+                    .getElementById(
+                        "bookingId"
+                    )
+                    .textContent =
+                    `Booking ID: ${booking._id}`;
+
+
+                document
+                    .getElementById(
+                        "tableNumber"
+                    )
+                    .textContent =
+                    booking.tableId;
+
+
+                document
+                    .getElementById(
+                        "tableCapacity"
+                    )
+                    .textContent =
+                    `${booking.capacity} Seats`;
+
+
+                document
+                    .getElementById(
+                        "customerName"
+                    )
+                    .textContent =
+                    booking.customerName;
+
+
+                document
+                    .getElementById(
+                        "phone"
+                    )
+                    .textContent =
+                    booking.phone;
+
+
+                document
+                    .getElementById(
+                        "bookingDate"
+                    )
+                    .textContent =
+                    booking.date;
+
+
+                document
+                    .getElementById(
+                        "bookingTime"
+                    )
+                    .textContent =
+                    booking.time;
+
+
+                document
+                    .getElementById(
+                        "guests"
+                    )
+                    .textContent =
+                    `${booking.guests} Guests`;
+
+
+                document
+                    .getElementById(
+                        "email"
+                    )
+                    .textContent =
+                    booking.email;
+
+
+                /* REQUEST */
+
+                if (booking.requests) {
+
+                    document
+                        .getElementById(
+                            "requests"
+                        )
+                        .textContent =
+                        booking.requests;
+
+                } else {
+
+                    document
+                        .getElementById(
+                            "requestBox"
+                        )
+                        .style.display =
+                        "none";
+
+                }
+
+
+                /* STATUS */
+
+                const status =
+                    document.getElementById(
+                        "bookingStatus"
+                    );
+                const cancelButton =
+                    document.getElementById(
+                        "cancelBookingBtn"
+                    );
+
+
+                if (booking.status === "Confirmed") {
+
+                    cancelButton.style.display =
+                        "inline-block";
+
+                    cancelButton.disabled =
+                        false;
+
+                    cancelButton.textContent =
+                        "❌ Cancel Reservation";
+
+                } else {
+
+                    cancelButton.style.display =
+                        "none";
+
+                }
+
+                status.textContent =
+                    booking.status;
+
+
+                status.className =
+                    "status";
+
+
+                status.classList.add(
+
+                    `status-${booking.status
+                    .toLowerCase()
+                    .replace(" ", "-")}`
+
+                );
+
+
+                /* SHOW CARD */
+
+                loading.style.display =
+                    "none";
+
+                bookingCard.style.display =
+                    "block";
+
+
+            } catch (error) {
+
+
+                console.error(
+                    "Tracking error:",
+                    error
+                );
+
+
+                loading.style.display =
+                    "none";
+
+                bookingCard.style.display =
+                    "none";
+
+                errorBox.style.display =
+                    "block";
+
+                errorMessage.textContent =
+                    error.message ||
+                    "Unable to load reservation.";
+
+            }
+
+        }
+
+
+        /* =====================================================
+           LOAD ON PAGE OPEN
+        ===================================================== */
+
+        loadBooking();
+    </script>
+
+
+</body>
+
+</html>
