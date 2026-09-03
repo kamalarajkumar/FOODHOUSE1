@@ -276,6 +276,34 @@
         .add-cart-btn:hover {
             background: #ea580c;
         }
+        /* Admin Login Button */
+        
+        .admin-login-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 999999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #111;
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #ff6b00;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+        
+        .admin-login-btn:hover {
+            background: #ff6b00;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
     </style>
 </head>
 
@@ -1644,20 +1672,8 @@
         );
     </script>
 
-    <a href="admin-login.html" style="
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    z-index: 999999;
-    display: block;
-    padding: 12px 18px;
-    background: #000;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 8px;
-    font-size: 16px;
-">
-    Admin Login
+    <a href="admin-login.html" class="admin-login-btn">
+    ♙ Admin Login
 </a>
 </body>
 
