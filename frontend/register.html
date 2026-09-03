@@ -5,225 +5,827 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>FOODHOUSE - Create Account</title>
+    <title>FOODHOUSE | Create Account</title>
 
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
         
+         :root {
+            --orange: #ff6b00;
+            --orange-light: #ff9800;
+            --dark: #090909;
+            --card: rgba(20, 20, 20, 0.96);
+            --gray: #999;
+            --white: #fff;
+        }
+        
         body {
-            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #080808;
+            color: white;
+            overflow-x: hidden;
+        }
+        /* =================================
+           MAIN PAGE
+        ================================= */
+        
+        .register-page {
             min-height: 100vh;
             display: flex;
+            overflow: hidden;
+        }
+        /* =================================
+           LEFT FOOD SECTION
+        ================================= */
+        
+        .food-side {
+            width: 48%;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
             align-items: center;
-            justify-content: center;
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
+            padding: 65px;
+            overflow: hidden;
+            background-image: linear-gradient( rgba(0, 0, 0, 0.48), rgba(0, 0, 0, 0.72)), url("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1400&q=90");
+            background-size: cover;
+            background-position: center;
         }
         
-        .register-container {
-            width: 100%;
-            max-width: 420px;
-            padding: 20px;
+        .food-side::after {
+            content: "";
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: rgba(255, 107, 0, 0.13);
+            border-radius: 50%;
+            filter: blur(100px);
+            left: -150px;
+            top: -150px;
+        }
+        /* =================================
+           LEFT CONTENT
+        ================================= */
+        
+        .food-content {
+            position: relative;
+            z-index: 5;
+            max-width: 540px;
+            animation: leftAppear 1s ease;
         }
         
-        .register-box {
-            background: white;
-            padding: 35px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+        @keyframes leftAppear {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .welcome {
+            color: var(--orange);
+            font-size: 30px;
+            font-style: italic;
+            margin-bottom: 5px;
         }
         
         .logo {
-            text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-            margin-bottom: 8px;
+            font-size: clamp(48px, 5vw, 74px);
+            font-weight: 900;
+            letter-spacing: 2px;
+            line-height: 1;
         }
         
-        .subtitle {
-            text-align: center;
-            color: #777;
-            margin-bottom: 30px;
+        .logo span {
+            color: var(--orange);
         }
+        
+        .orange-line {
+            width: 85px;
+            height: 4px;
+            background: var(--orange);
+            border-radius: 10px;
+            margin: 24px 0;
+        }
+        
+        .tagline {
+            font-size: 27px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .tagline span {
+            color: var(--orange);
+        }
+        
+        .description {
+            max-width: 450px;
+            color: #ddd;
+            font-size: 17px;
+            line-height: 1.7;
+        }
+        /* =================================
+           FLOATING FOOD
+        ================================= */
+        
+        .food-icon {
+            position: absolute;
+            z-index: 3;
+            font-size: 34px;
+            opacity: 0.85;
+            animation: floatFood 5s ease-in-out infinite;
+        }
+        
+        .food1 {
+            top: 15%;
+            left: 12%;
+        }
+        
+        .food2 {
+            top: 22%;
+            right: 10%;
+            animation-delay: 1s;
+        }
+        
+        .food3 {
+            bottom: 28%;
+            left: 10%;
+            animation-delay: 2s;
+        }
+        
+        .food4 {
+            bottom: 16%;
+            right: 13%;
+            animation-delay: 3s;
+        }
+        
+        .food5 {
+            top: 45%;
+            right: 5%;
+            font-size: 25px;
+            animation-delay: 1.5s;
+        }
+        
+        @keyframes floatFood {
+            0%,
+            100% {
+                transform: translateY(0) rotate(0);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+        }
+        /* =================================
+           RIGHT SECTION
+        ================================= */
+        
+        .register-side {
+            width: 52%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 35px;
+            background: radial-gradient( circle at 80% 10%, rgba(255, 107, 0, 0.15), transparent 35%), #101010;
+        }
+        /* =================================
+           REGISTER CARD
+        ================================= */
+        
+        .register-card {
+            width: 510px;
+            max-height: 95vh;
+            overflow-y: auto;
+            padding: 35px 42px;
+            background: var(--card);
+            border: 1.5px solid rgba(255, 107, 0, 0.75);
+            border-radius: 25px;
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.13), 0 20px 60px rgba(0, 0, 0, 0.65);
+            animation: cardAppear 1s ease;
+        }
+        
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(45px) scale(0.94);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        /* =================================
+           HEADER
+        ================================= */
+        
+        .chef {
+            text-align: center;
+            font-size: 50px;
+            margin-bottom: 5px;
+            animation: chefFloat 3s ease-in-out infinite;
+        }
+        
+        @keyframes chefFloat {
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-7px);
+            }
+        }
+        
+        .register-title {
+            text-align: center;
+            font-size: 31px;
+            margin-bottom: 7px;
+        }
+        
+        .register-subtitle {
+            text-align: center;
+            color: #999;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+        /* =================================
+           FORM
+        ================================= */
         
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 15px;
         }
         
-        label {
+        .form-label {
             display: block;
+            color: #ddd;
+            font-size: 14px;
+            font-weight: 600;
             margin-bottom: 7px;
-            font-weight: bold;
         }
         
-        input {
+        .input-wrapper {
+            position: relative;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            z-index: 2;
+        }
+        
+        .input-wrapper input {
             width: 100%;
-            padding: 13px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            height: 50px;
+            padding: 0 45px;
+            background: #242424;
+            border: 1px solid #4c4c4c;
+            border-radius: 10px;
+            color: white;
             font-size: 15px;
+            transition: 0.3s;
         }
         
-        input:focus {
-            outline: none;
-            border-color: #f97316;
+        .input-wrapper input::placeholder {
+            color: #777;
         }
+        
+        .input-wrapper input:focus {
+            outline: none;
+            border-color: var(--orange);
+            background: #292929;
+            box-shadow: 0 0 0 3px rgba(255, 107, 0, 0.08), 0 0 15px rgba(255, 107, 0, 0.13);
+        }
+        /* =================================
+           PASSWORD EYE
+        ================================= */
+        
+        .eye {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.75;
+        }
+        
+        .eye:hover {
+            opacity: 1;
+        }
+        /* =================================
+           PASSWORD STRENGTH
+        ================================= */
+        
+        .strength-container {
+            margin-top: 7px;
+        }
+        
+        .strength-bar {
+            height: 4px;
+            width: 0;
+            border-radius: 10px;
+            background: #555;
+            transition: 0.3s;
+        }
+        
+        .strength-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+        /* =================================
+           TERMS
+        ================================= */
+        
+        .terms {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin: 17px 0;
+            color: #aaa;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        
+        .terms input {
+            margin-top: 3px;
+            accent-color: var(--orange);
+        }
+        
+        .terms a {
+            color: var(--orange);
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        /* =================================
+           REGISTER BUTTON
+        ================================= */
         
         .register-button {
             width: 100%;
-            padding: 14px;
+            height: 55px;
             border: none;
-            border-radius: 8px;
-            background: #f97316;
+            border-radius: 10px;
+            background: linear-gradient( 135deg, #ff6200, #ff9800);
             color: white;
-            font-size: 16px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 7px 20px rgba(255, 107, 0, 0.25);
+            position: relative;
+            overflow: hidden;
         }
         
         .register-button:hover {
-            background: #ea580c;
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(255, 107, 0, 0.4);
+        }
+        
+        .register-button:active {
+            transform: scale(0.98);
         }
         
         .register-button:disabled {
-            opacity: 0.7;
+            opacity: 0.65;
             cursor: not-allowed;
+            transform: none;
         }
+        /* =================================
+           MESSAGE
+        ================================= */
         
         .message {
             display: none;
-            padding: 12px;
-            margin-bottom: 18px;
-            border-radius: 8px;
+            padding: 11px;
+            margin-bottom: 15px;
+            border-radius: 9px;
             text-align: center;
+            font-size: 14px;
         }
+        /* =================================
+           LOGIN LINK
+        ================================= */
         
         .login-link {
             text-align: center;
-            margin-top: 20px;
-            color: #666;
+            margin-top: 22px;
+            color: #999;
+            font-size: 14px;
         }
         
         .login-link a {
-            color: #f97316;
-            text-decoration: none;
+            color: var(--orange);
             font-weight: bold;
+            text-decoration: none;
+            margin-left: 4px;
         }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        /* =================================
+           BACK HOME
+        ================================= */
         
         .back-home {
             display: block;
             text-align: center;
-            margin-top: 20px;
-            color: #555;
+            margin-top: 16px;
+            color: #999;
             text-decoration: none;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        
+        .back-home:hover {
+            color: var(--orange);
+        }
+        /* =================================
+           MOBILE
+        ================================= */
+        
+        @media (max-width: 950px) {
+            body {
+                overflow-y: auto;
+            }
+            .register-page {
+                flex-direction: column;
+            }
+            .food-side {
+                width: 100%;
+                min-height: 42vh;
+                padding: 45px;
+            }
+            .register-side {
+                width: 100%;
+                min-height: 58vh;
+                padding: 30px 18px;
+            }
+            .logo {
+                font-size: 55px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .food-side {
+                min-height: 38vh;
+                padding: 30px 25px;
+            }
+            .welcome {
+                font-size: 23px;
+            }
+            .logo {
+                font-size: 40px;
+            }
+            .tagline {
+                font-size: 19px;
+            }
+            .description {
+                font-size: 14px;
+            }
+            .register-side {
+                padding: 20px 12px;
+            }
+            .register-card {
+                width: 100%;
+                padding: 30px 22px;
+                border-radius: 20px;
+            }
+            .register-title {
+                font-size: 27px;
+            }
         }
     </style>
 
 </head>
 
+
 <body>
 
-    <div class="register-container">
 
-        <div class="register-box">
+    <div class="register-page">
 
-            <div class="logo">
-                🍽️ FOODHOUSE
+
+        <!-- =================================
+         LEFT FOOD SECTION
+    ================================== -->
+
+        <section class="food-side">
+
+
+            <!-- Floating food -->
+
+            <div class="food-icon food1">
+                🍕
             </div>
 
-            <div class="subtitle">
-                Create your account
+            <div class="food-icon food2">
+                🌶️
             </div>
 
-            <div id="message" class="message"></div>
+            <div class="food-icon food3">
+                🍔
+            </div>
 
-            <form id="registerForm">
+            <div class="food-icon food4">
+                🍅
+            </div>
 
-                <div class="form-group">
+            <div class="food-icon food5">
+                🍟
+            </div>
 
-                    <label for="name">
+
+            <div class="food-content">
+
+
+                <div class="welcome">
+                    Join
+                </div>
+
+
+                <div class="logo">
+                    FOOD<span>HOUSE</span>
+                </div>
+
+
+                <div class="orange-line"></div>
+
+
+                <div class="tagline">
+                    Good Food <span>|</span> Good Mood
+                </div>
+
+
+                <p class="description">
+                    Create your FOODHOUSE account and discover delicious dishes, exciting offers and a wonderful dining experience.
+                </p>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================
+         RIGHT REGISTER SECTION
+    ================================== -->
+
+        <section class="register-side">
+
+
+            <div class="register-card">
+
+
+                <!-- Chef -->
+
+                <div class="chef">
+                    👨‍🍳
+                </div>
+
+
+                <h1 class="register-title">
+                    Create Account
+                </h1>
+
+
+                <p class="register-subtitle">
+                    Join FOODHOUSE and start ordering
+                </p>
+
+
+
+                <!-- Message -->
+
+                <div id="message" class="message">
+                </div>
+
+
+
+                <!-- FORM -->
+
+                <form id="registerForm">
+
+
+                    <!-- FULL NAME -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
                         Full Name
                     </label>
 
-                    <input type="text" id="name" placeholder="Enter your full name" required>
+                        <div class="input-wrapper">
 
-                </div>
+                            <span class="input-icon">
+                            👤
+                        </span>
+
+                            <input type="text" id="name" placeholder="Enter your full name" autocomplete="name" required>
+
+                        </div>
+
+                    </div>
 
 
-                <div class="form-group">
 
-                    <label for="email">
-                        Email
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
+                        Email Address
                     </label>
 
-                    <input type="email" id="email" placeholder="Enter your email" required>
+                        <div class="input-wrapper">
 
-                </div>
+                            <span class="input-icon">
+                            ✉️
+                        </span>
+
+                            <input type="email" id="email" placeholder="Enter your email" autocomplete="email" required>
+
+                        </div>
+
+                    </div>
 
 
-                <div class="form-group">
 
-                    <label for="phone">
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
                         Phone Number
                     </label>
 
-                    <input type="tel" id="phone" placeholder="Enter your phone number">
+                        <div class="input-wrapper">
 
-                </div>
+                            <span class="input-icon">
+                            📱
+                        </span>
+
+                            <input type="tel" id="phone" placeholder="Enter your phone number" autocomplete="tel" maxlength="15">
+
+                        </div>
+
+                    </div>
 
 
-                <div class="form-group">
 
-                    <label for="password">
+                    <!-- PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
                         Password
                     </label>
 
-                    <input type="password" id="password" placeholder="Create a password" minlength="6" required>
+                        <div class="input-wrapper">
 
-                </div>
+                            <span class="input-icon">
+                            🔒
+                        </span>
+
+                            <input type="password" id="password" placeholder="Create a strong password" minlength="6" autocomplete="new-password" required>
+
+                            <span class="eye" id="passwordEye">
+                            👁️
+                        </span>
+
+                        </div>
 
 
-                <div class="form-group">
+                        <div class="strength-container">
 
-                    <label for="confirmPassword">
+                            <div class="strength-bar" id="strengthBar">
+                            </div>
+
+                            <div class="strength-text" id="strengthText">
+                                Use at least 6 characters
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label class="form-label">
                         Confirm Password
                     </label>
 
-                    <input type="password" id="confirmPassword" placeholder="Confirm your password" minlength="6" required>
+                        <div class="input-wrapper">
+
+                            <span class="input-icon">
+                            🔐
+                        </span>
+
+                            <input type="password" id="confirmPassword" placeholder="Confirm your password" minlength="6" autocomplete="new-password" required>
+
+                            <span class="eye" id="confirmEye">
+                            👁️
+                        </span>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- TERMS -->
+
+                    <label class="terms">
+
+                    <input
+                        type="checkbox"
+                        id="terms"
+                        required
+                    >
+
+                    <span>
+                        I agree to the
+                        <a href="#" onclick="return false;">
+                            Terms & Conditions
+                        </a>
+                        and
+                        <a href="#" onclick="return false;">
+                            Privacy Policy
+                        </a>.
+                    </span>
+
+                </label>
+
+
+
+                    <!-- REGISTER BUTTON -->
+
+                    <button type="submit" class="register-button" id="registerButton">
+
+                    Create Account 🍴
+
+                </button>
+
+
+                </form>
+
+
+
+                <!-- LOGIN -->
+
+                <div class="login-link">
+
+                    Already have an account?
+
+                    <a href="login.html">
+                    Login
+                </a>
 
                 </div>
 
 
-                <button type="submit" class="register-button" id="registerButton">
-                    Create Account
-                </button>
 
-            </form>
+                <!-- BACK -->
 
+                <a href="foodhouse.html" class="back-home">
 
-            <div class="login-link">
+                ← Back to Food House
 
-                Already have an account?
+            </a>
 
-                <a href="login.html">
-                    Login
-                </a>
 
             </div>
 
-
-            <a href="foodhouse.html" class="back-home">
-                ← Back to FOODHOUSE
-            </a>
-
-        </div>
+        </section>
 
     </div>
 
 
+
     <script>
+        /* =================================
+                   ELEMENTS
+                ================================= */
+
         const registerForm =
             document.getElementById("registerForm");
 
@@ -233,6 +835,22 @@
         const registerButton =
             document.getElementById("registerButton");
 
+        const password =
+            document.getElementById("password");
+
+        const confirmPassword =
+            document.getElementById("confirmPassword");
+
+        const strengthBar =
+            document.getElementById("strengthBar");
+
+        const strengthText =
+            document.getElementById("strengthText");
+
+
+        /* =================================
+           SHOW MESSAGE
+        ================================= */
 
         function showMessage(text, success) {
 
@@ -240,13 +858,178 @@
 
             message.style.display = "block";
 
-            message.style.background =
-                success ? "#dcfce7" : "#fee2e2";
+            if (success) {
 
-            message.style.color =
-                success ? "#166534" : "#991b1b";
+                message.style.background =
+                    "rgba(0, 210, 106, 0.12)";
+
+                message.style.color =
+                    "#00d26a";
+
+                message.style.border =
+                    "1px solid rgba(0, 210, 106, 0.3)";
+
+            } else {
+
+                message.style.background =
+                    "rgba(255, 70, 70, 0.12)";
+
+                message.style.color =
+                    "#ff5555";
+
+                message.style.border =
+                    "1px solid rgba(255, 70, 70, 0.3)";
+            }
+
         }
 
+
+        /* =================================
+           SHOW / HIDE PASSWORD
+        ================================= */
+
+        function togglePassword(input, eye) {
+
+            if (input.type === "password") {
+
+                input.type = "text";
+
+                eye.textContent = "🙈";
+
+            } else {
+
+                input.type = "password";
+
+                eye.textContent = "👁️";
+
+            }
+
+        }
+
+
+        document
+            .getElementById("passwordEye")
+            .addEventListener("click", function() {
+
+                togglePassword(
+                    password,
+                    this
+                );
+
+            });
+
+
+        document
+            .getElementById("confirmEye")
+            .addEventListener("click", function() {
+
+                togglePassword(
+                    confirmPassword,
+                    this
+                );
+
+            });
+
+
+        /* =================================
+           PASSWORD STRENGTH
+        ================================= */
+
+        password.addEventListener(
+            "input",
+            function() {
+
+                const value =
+                    password.value;
+
+                let strength = 0;
+
+
+                if (value.length >= 6) {
+                    strength++;
+                }
+
+                if (/[A-Z]/.test(value)) {
+                    strength++;
+                }
+
+                if (/[0-9]/.test(value)) {
+                    strength++;
+                }
+
+                if (/[^A-Za-z0-9]/.test(value)) {
+                    strength++;
+                }
+
+
+                if (value.length === 0) {
+
+                    strengthBar.style.width = "0";
+
+                    strengthText.textContent =
+                        "Use at least 6 characters";
+
+                } else if (strength <= 1) {
+
+                    strengthBar.style.width = "25%";
+
+                    strengthBar.style.background =
+                        "#ff4444";
+
+                    strengthText.textContent =
+                        "Weak password";
+
+                    strengthText.style.color =
+                        "#ff4444";
+
+                } else if (strength === 2) {
+
+                    strengthBar.style.width = "50%";
+
+                    strengthBar.style.background =
+                        "#ff9800";
+
+                    strengthText.textContent =
+                        "Medium password";
+
+                    strengthText.style.color =
+                        "#ff9800";
+
+                } else if (strength === 3) {
+
+                    strengthBar.style.width = "75%";
+
+                    strengthBar.style.background =
+                        "#ffc107";
+
+                    strengthText.textContent =
+                        "Good password";
+
+                    strengthText.style.color =
+                        "#ffc107";
+
+                } else {
+
+                    strengthBar.style.width = "100%";
+
+                    strengthBar.style.background =
+                        "#00d26a";
+
+                    strengthText.textContent =
+                        "Strong password";
+
+                    strengthText.style.color =
+                        "#00d26a";
+
+                }
+
+            }
+        );
+
+
+        /* =================================
+           REGISTER
+        ================================= */
 
         registerForm.addEventListener(
             "submit",
@@ -276,28 +1059,43 @@
                     .trim();
 
 
-                const password =
-                    document
-                    .getElementById("password")
-                    .value;
+                const passwordValue =
+                    password.value;
 
 
-                const confirmPassword =
-                    document
-                    .getElementById("confirmPassword")
-                    .value;
+                const confirmPasswordValue =
+                    confirmPassword.value;
 
 
-                if (password !== confirmPassword) {
+
+                /* Password check */
+
+                if (passwordValue !== confirmPasswordValue) {
 
                     showMessage(
-                        "Passwords do not match",
+                        "Passwords do not match.",
                         false
                     );
 
                     return;
+
                 }
 
+
+                if (passwordValue.length < 6) {
+
+                    showMessage(
+                        "Password must contain at least 6 characters.",
+                        false
+                    );
+
+                    return;
+
+                }
+
+
+
+                /* Disable button */
 
                 registerButton.disabled = true;
 
@@ -305,7 +1103,16 @@
                     "Creating Account...";
 
 
+
+                showMessage(
+                    "Creating your FOODHOUSE account...",
+                    true
+                );
+
+
+
                 try {
+
 
                     const response =
                         await fetch(
@@ -324,15 +1131,17 @@
 
                                     phone: phone,
 
-                                    password: password
+                                    password: passwordValue
 
                                 })
                             }
                         );
 
 
+
                     const data =
                         await response.json();
+
 
 
                     if (!response.ok ||
@@ -346,18 +1155,29 @@
                     }
 
 
+
+                    /* Success */
+
                     showMessage(
-                        "Account created successfully!",
+                        "Account created successfully! 🎉",
                         true
                     );
 
+
+                    registerButton.textContent =
+                        "Account Created ✓";
+
+
+
+                    /* Go to login */
 
                     setTimeout(function() {
 
                         window.location.href =
                             "login.html";
 
-                    }, 1000);
+                    }, 1500);
+
 
 
                 } catch (error) {
@@ -370,17 +1190,17 @@
 
                     showMessage(
                         error.message ||
-                        "Unable to create account",
+                        "Unable to create account.",
                         false
                     );
 
 
-                } finally {
+                    registerButton.disabled =
+                        false;
 
-                    registerButton.disabled = false;
 
                     registerButton.textContent =
-                        "Create Account";
+                        "Create Account 🍴";
 
                 }
 
