@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOODHOUSE - Login</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background: #070606;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        .login-container {
+            width: 380px;
+            padding: 35px;
+            background: #1d1c1c;
+            border-radius: 15px;
+            border: 1px solid #ff5e01;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo {
+            text-align: center;
+            color: #ff5e01;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 13px;
+            margin-bottom: 15px;
+            border: 1px solid #555;
+            border-radius: 7px;
+            background: #292828;
+            color: white;
+            font-size: 15px;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff5e01;
+        }
+        
+        button {
+            width: 100%;
+            padding: 13px;
+            background: #ff5e01;
+            border: none;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background: #f04907;
+        }
+        
+        #message {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #ff5e01;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+
+        <div class="logo">FOODHOUSE</div>
+
+        <h2>Login</h2>
+
+        <form id="loginForm">
+
+            <input type="text" id="username" placeholder="Username" required>
+
+            <input type="password" id="password" placeholder="Password" required>
+
+            <button type="submit">Login</button>
+
+        </form>
+
+        <p id="message"></p>
+
+        <a href="foodhouse.html" class="back">
+        ← Back to Food House
+    </a>
+
+    </div>
+
+    <script>
+        const loginForm = document.getElementById("loginForm");
+
+        loginForm.addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const message = document.getElementById("message");
+
+            message.textContent = "Logging in...";
+
+            try {
+
+                const response = await fetch(
+                    "https://foodhouse1.onrender.com/api/auth/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            username: username,
+                            password: password
+                        })
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.ok) {
+
+                    message.style.color = "#00c853";
+                    message.textContent = "Login successful!";
+
+                    if (data.token) {
+                        localStorage.setItem("token", data.token);
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = "foodhouse.html";
+                    }, 1000);
+
+                } else {
+
+                    message.style.color = "#ff4444";
+                    message.textContent =
+                        data.message || "Invalid username or password.";
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.style.color = "#ff4444";
+                message.textContent =
+                    "Unable to connect to server.";
+
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
